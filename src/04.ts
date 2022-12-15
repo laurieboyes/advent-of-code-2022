@@ -21,22 +21,15 @@ function fitsInOneBox(boxes) {
   };
 
   const boxFitsInBoxes = (box: Box, remainingBoxes: Box[]) => {
-    if (remainingBoxes.length === 0) {
-      return true;
-    }
-    const [nextBox, ...otherBoxes] = remainingBoxes;
-    return boxFitsInBox(box, nextBox) && boxFitsInBoxes(box, otherBoxes);
+    return remainingBoxes.reduce((acc, otherBox) => {
+      return acc && boxFitsInBox(box, otherBox);
+    }, true);
   };
 
-  for (const i of sortedBoxes.keys()) {
-    const box = sortedBoxes[i];
+  return sortedBoxes.reduce((acc, box, i) => {
     const biggerBoxes = sortedBoxes.slice(i + 1);
-    if (!boxFitsInBoxes(box, biggerBoxes)) {
-      return false;
-    }
-  };
-
-  return true;
+    return acc && boxFitsInBoxes(box, biggerBoxes);
+  }, true);
 }
 
 export default fitsInOneBox;
