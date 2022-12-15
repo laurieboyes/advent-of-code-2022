@@ -45,4 +45,14 @@ describe('04', () => {
       ])
     ).toBe(false);
   });
+
+  it('should pass this test that failed', () => {
+    expect(
+      day4([
+        { l: 1, w: 1, h: 1 },
+        { l: 2, w: 2, h: 2 },
+        { l: 2, w: 10, h: 2}
+      ])
+    ).toBe(false);
+  })
 });

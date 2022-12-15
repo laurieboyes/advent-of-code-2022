@@ -1,4 +1,8 @@
 function fitsInOneBox(boxes) {
+  if (boxes.length <= 1) {
+    return true;
+  }
+
   type Box = {
     l: number;
     w: number;
@@ -16,11 +20,22 @@ function fitsInOneBox(boxes) {
     return dimensionFit('l') && dimensionFit('w') && dimensionFit('h');
   };
 
-  for (let i = 1; i < sortedBoxes.length; i++) {
-    if (!boxFitsInBox(sortedBoxes[i - 1], sortedBoxes[i])) {
+  const boxFitsInBoxes = (box: Box, remainingBoxes: Box[]) => {
+    if (remainingBoxes.length === 0) {
+      return true;
+    }
+    const [nextBox, ...otherBoxes] = remainingBoxes;
+    return boxFitsInBox(box, nextBox) && boxFitsInBoxes(box, otherBoxes);
+  };
+
+  for (const i of sortedBoxes.keys()) {
+    const box = sortedBoxes[i];
+    const biggerBoxes = sortedBoxes.slice(i + 1);
+    if (!boxFitsInBoxes(box, biggerBoxes)) {
       return false;
     }
-  }
+  };
+
   return true;
 }
 
