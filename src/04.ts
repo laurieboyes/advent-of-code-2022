@@ -23,10 +23,10 @@ function fitsInOneBox(boxes) {
   const getBoxSortKey = (box: Box) => parseInt(`${box.l}${box.w}${box.h}`);
   const sortedBoxes = boxes.sort((a, b) => getBoxSortKey(a) - getBoxSortKey(b));
 
-  const elementsRemainingAfter = (arr, i) => arr.slice(i + 1);
+  const getArrayItemsFollowing = (arr, i) => arr.slice(i + 1);
 
   return sortedBoxes.every((box, i) =>
-    boxFitsInBoxes(box, elementsRemainingAfter(sortedBoxes, i))
+    boxFitsInBoxes(box, getArrayItemsFollowing(sortedBoxes, i))
   );
 }
 
